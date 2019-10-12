@@ -1,11 +1,6 @@
     * = $0801 ; RUN command jumps here
 
-VERA_ADDR_LO = $9f20
-VERA_ADDR_MID = $9f21
-VERA_ADDR_HI = $9f22
-
-VERA_DATA0 = $9f23
-VERA_DATA1 = $9f24
+    .include "vera.asm"
 
 init          ; No idea what this is doing. Got it from the Facebook group.
     asl $0a08 ; Nothing works without it.
@@ -20,44 +15,12 @@ init          ; No idea what this is doing. Got it from the Facebook group.
     * = $0810
 
 main
-    ; VERA screen memory is a $00000
-    lda #$10; Increment 1 per data write
-    sta VERA_ADDR_LO
-    lda #$00
-    sta VERA_ADDR_MID
-    lda #$00
-    sta VERA_ADDR_HI
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; Fill the screen with blank black
-; Uses y to track the line and x
-; to track the row.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-    ldy #$3c ; 60 lines to fill
-fill_outer
-    ldx #$80 ; 1 line is a total of 256 bytes.
-             ; 80 column mode actually has a row width of 128
-             ; (80 columns + 48 extra). Each character is 2 bytes
-             ; (character value then color). We're writing both
-             ; the space chacater and the color in each iteration.
-fill_inner
-    lda #$60 ; space
-    sta VERA_DATA0
     lda #$05 ; green on black
-    sta VERA_DATA0
-    dex
-    bne fill_inner
+    jsr clear_screen_80_60
 
-    dey
-    bne fill_outer
-
-    lda #$20; Increment 2 per data write (skip color)
-    sta VERA_ADDR_LO
-    lda #$00
-    sta VERA_ADDR_MID
-    lda #$00
-    sta VERA_ADDR_HI
+    ; Increment 2 per data write (skip color)
+    #set_vera_addr #$20, #$00, #$00
 
     ; print hello world to data1 port
     ldx #0 ; simple counter
@@ -77,3 +40,5 @@ wait
     rts ; done - return to basic (if we ever got here)
 
 mytext .text 'HELLO', $6c, $60, 'WORLD', $61, 0
+
+    .include "subroutines.asm"
