@@ -1,7 +1,6 @@
     * = $0801 ; RUN command jumps here
 
 .include "boilerplate.asm"
-.include "vera.asm"
 
     #init
 
@@ -26,7 +25,6 @@ loop
     bra loop ; goto loop
 
 done
-
     ; Increment 1 per data write, start at the first sprite register
     #set_vera_addr #$1F, #$50, #$00
 
@@ -42,43 +40,10 @@ done
 
     #a_to_vera_0 #$0C ; blank collision mask, z-depth 3, zero flip
 
-    #a_to_vera_0 #$00 ; 8x8, palette offset 0
+    #a_to_vera_0 #$50 ; 16x16, palette offset 0
 
     ; We said the sprite started at 0, so write something there
-    #set_vera_addr #$11, #$00, #$00
-    lda #$ff
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
-    sta VERA_DATA0
+    #copy_sprite_to_location SPRITE_SHIP, #$80, #$11, #$00, #$00
 
     ; Enable sprite 0
     #set_vera_addr #$1F, #$40, #$00
@@ -90,4 +55,6 @@ wait
 
 mytext .text 'HELLO', $6c, $60, 'WORLD', $61, 0
 
+.include "vera.asm"
+.include "sprite_macros.asm"
 .include "subroutines.asm"

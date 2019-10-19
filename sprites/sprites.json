@@ -1,0 +1,18 @@
+{
+    "sprites": [
+        {
+            "name": "ship",
+            "mode": "4bpp",
+            "width": 16,
+            "height": 16,
+            "palette": 0
+        },
+        {
+            "name": "bad_ship",
+            "mode": "4bpp",
+            "width": 16,
+            "height": 16,
+            "palette": 0
+        }
+    ]
+}
