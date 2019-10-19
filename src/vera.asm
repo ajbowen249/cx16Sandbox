@@ -13,3 +13,9 @@ set_vera_addr .macro high, mid, low
     lda \high
     sta VERA_ADDR_LO
     .endm
+
+; Loads argument into A, then stores A to VERA_DATA0
+a_to_vera_0 .macro value
+    lda \value
+    sta VERA_DATA0
+    .endm
