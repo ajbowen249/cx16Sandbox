@@ -1,4 +1,4 @@
 pushd scripts
-call build.bat
-call run.bat
+python build.py
+python run.py
 popd
