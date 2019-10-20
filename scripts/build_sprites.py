@@ -2,6 +2,7 @@ import json
 import numpy
 import os
 import png
+import shutil
 import sys
 
 from functools import reduce
@@ -103,12 +104,16 @@ def export_sprite(sprite):
         raw_data = export_4bpp(image_3d, name, sprite['palette'])
     else:
         sys.exit('Mode "{}" not yet supported.'.format(sprite['mode']))
-    
-    return 'SPRITE_{} .byte {}'.format(name.upper(), reduce(lambda x, y: str(x) + ', ' + str(y), raw_data))
+
+    return 'SPRITE_{} .byte {}\n\n'.format(name.upper(), reduce(lambda x, y: str(x) + ', ' + str(y), raw_data))
 
 def export_all_sprites(sprites):
-    for sprite in sprites:
-        print(export_sprite(sprite))
+    shutil.rmtree('../generated_sprites', ignore_errors=True)
+    os.mkdir('../generated_sprites')
+
+    with open('../generated_sprites/sprite_data.asm', 'w') as out_file:
+        for sprite in sprites:
+            out_file.write(export_sprite(sprite))
 
 with open('../sprites/sprites.json', 'r') as f:
     spr_file = json.loads(f.read())
