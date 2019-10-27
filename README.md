@@ -8,7 +8,9 @@ This is a loosely-organized project for the [Commander X16](https://github.com/c
 - Have 64tass in your PATH
 - Python 3 as your default Python
 - Have [pypng](https://pypi.org/project/pypng/) installed
-- have [numpy]() installed
+- have [numpy](https://numpy.org/) installed
+
+If you are so inclined, you may also use a python3 virtualenvironment. `.venv` is in the `.gitignore` and the required python libraries are in `requirements.txt`.
 
 ## Building
 
